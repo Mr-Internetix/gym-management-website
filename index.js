@@ -1,10 +1,17 @@
 const express = require('express');
-const res = require('express/lib/response');
 const app = express()
 const PORT = 3000;
+const path = require('path')
+
+
 
 // setting up static files 
-app.use(express.static('public'))
+app.use('/static',express.static('public'))
+app.use('/css',express.static(path.join(__dirname,'node_modules/bootstrap/dist/css')))
+// app.use('/css',express.static(path.join(_dirname,'node_modules/bootstrap/dist/css')))
+app.use('/js',express.static(path.join(__dirname,'node_modules/bootstrap/dist/js')))
+// app.use('/js',express.static(path.join(_dirname,'node_modules/bootstrap/dist/js')))
+
 
 // setting up routes 
 app.get('/',(req,res)=>{
