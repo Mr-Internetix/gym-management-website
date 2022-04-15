@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/signin.css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <script
+    src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"
+    defer
+  ></script>
+  <script
+    src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"
+    defer
+  ></script>
+  <script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+  defer
+></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css"
+  />
+  <script
+    src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"
+    defer
+  ></script>
+    <title>Sign In</title>
+</head>
+<body class="text-center">
+    <main class="form-signin">
+    <form id="login">
+        <img id="logo"  src="./static/img/logo.png" alt="" width="150px" height="150px">
+        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+    
+        <div class="form-floating">
+          <input type="email" class="form-control" id="loginusername" placeholder="name@example.com">
+          <label for="floatingInput">Email address</label>
+        </div>
+        <div class="form-floating">
+          <input type="password" class="form-control" id="password" placeholder="Password">
+          <label for="floatingPassword">Password</label>
+        </div>
+    
+        <div class="checkbox mb-3">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+        <button id="login-Btn" class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+        <p class="mt-5 mb-3 text-muted">&copy; Arnold Gym 2022–2023</p>
+      </form>
+    </main>
+    
+        
+
+
+    <script src="./static/js/signin.js"></script>
+    <script src="./js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

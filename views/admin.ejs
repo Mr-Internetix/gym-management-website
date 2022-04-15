@@ -1,18 +1,387 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/admin.css">
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
-    <title>Welcome Admin</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/css/admin.css">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <script
+    src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"
+    defer
+  ></script>
+  <script
+    src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"
+    defer
+  ></script>
+  <script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+  defer
+></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css"
+  />
+  <script
+    src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"
+    defer
+  ></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <title>Welcome Admin</title>
 </head>
+
 <body>
-    <h1>This is admin page </h1>
+  <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Arnold Gym</a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+      data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="w-100"> </div>
+    <div class="navbar-nav">
+      <div class="nav-item text-nowrap">
+        <a class="nav-link px-3" href="/sessionLogout">Sign out</a>
+      </div>
+    </div>
+  </header>
+
+
+  <div class="container-fluid">
+    <div class="row">
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <div class="position-sticky pt-3">
+          <ul class="nav flex-column">
+            <li class="nav-item" id="dashboard">
+              <a class="nav-link active" aria-current="page">
+                <span data-feather="home"></span>
+                Dashboard
+              </a>
+            </li>
+            <li class="nav-item" id="announcements">
+              <a class="nav-link" href="#">
+                <span data-feather="file"></span>
+                Anouncements
+              </a>
+            </li>
+            <li class="nav-item" id="add_announcement">
+              <a class="nav-link">
+                <span data-feather="bar-chart-2"></span>
+                Add Announcement
+              </a>
+            </li>
+            <li class="nav-item" id="adduser">
+              <a class="nav-link">
+                <span data-feather="users"></span>
+                Add user
+              </a>
+            </li>
+            <li class="nav-item" id="customers">
+              <a class="nav-link" href="#">
+                <span data-feather="users"></span>
+                Customers
+              </a>
+            </li>
+            <li class="nav-item" id="registrations">
+              <a class="nav-link">
+                <span data-feather="bar-chart-2"></span>
+                Registrations
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <!-- dashboard container -->
+
+      <main id="dashboard_container" class="col-md-9 ms-sm-auto col-lg-9 px-md-4">
+        <div
+          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <div class="row">
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        Total Number of Members</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        <%=members_count%>
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                        Earnings (Annual)</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        <%= earning%> ₹
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Members
+                      </div>
+                      <div class="row no-gutters align-items-center">
+                        <div class="col-auto">
+                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                            <%=members_count%>%
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="progress progress-sm mr-2">
+                            <div class="progress-bar bg-info" role="progressbar" style="width:10%"
+                              aria-valuenow="<%=members_count%>" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pending Requests Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                        Pending Registration</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        <%= pending_registration %>
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-comments fa-2x text-gray-300"></i>
+
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+
+
+            </div>
+            <div class="d-flex align-items-center justify-content-center">
+              <h1> Welcome <%= name %>
+              </h1>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex w-100 justify-content-center">
+          <div class="card" style="width: 18rem;">
+            <img src="<%= image %>" class="card-img-top" alt="user-logo">
+            <div class="card-body">
+              <h5 class="card-title">Email : <%= email %>
+              </h5>
+              <p class="card-text">Address : <%= address %>
+              </p>
+              <p class="card-text">Age : <%= age %>
+              </p>
+              <!-- <a href="#" class="btn btn-primary">hello</a> -->
+            </div>
+          </div>
+
+        </div>
+      </main>
+
+    </div>
+  </div>
+  <!-- // announcements -->
+  <main id="announcements_container" class="col-md-9 d-none ms-sm-auto col-lg-10 px-md-4">
+
     
 
-    <script src="./static/js/admin.js"></script>
-    <script src="./js/bootstrap.bundle.min.js"></script>
+ 
+  
+  </main>
+
+  <!-- add announcements -->
+  <main id="add_announcements" class="col-md-9 d-none ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+      <form id="announcement_form">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Enter Title </label>
+          <input type="text" class="form-control" id="announcement_title" aria-describedby="emailHelp" placeholder="Enter Title">
+          <small id="emailHelp" class="form-text text-muted">This will be title of announcement</small>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">message</label>
+          <input type="text" class="form-control" id="announcement_message" placeholder="Enter message">
+        </div>
+        <div class="form-group invisible">
+          <label for="exampleInputPassword1">message</label>
+    
+        </div>
+        <button id="add_announcement_button"  class="btn btn-primary">Add Announcement</button>
+      </form>
+    
+    </div>
+  </main>
+<!-- // add user  -->
+  <main id="add_user_container" class="col-md-9 d-none ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+      <section class="vh-100" style="background-color: #eee;">
+        <div class="container h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-lg-12 col-xl-11">
+              <div class="card text-black" style="border-radius: 25px;">
+                <div class="card-body p-md-5">
+                  <div class="row justify-content-center">
+                    <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+      
+                      <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
+      
+                      <form id="createAccount"class="mx-1 mx-md-4">
+      
+                        <div class="d-flex flex-row align-items-center mb-4">
+                          <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                          <div class="form-outline flex-fill mb-0">
+                            <input type="text" id="signupUsername" class="form-control" />
+                            <label class="form-label" for="form3Example1c">Your Name</label>
+                          </div>
+                        </div>
+      
+                        <div class="d-flex flex-row align-items-center mb-4">
+                          <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                          <div class="form-outline flex-fill mb-0">
+                            <input type="email" id="createEmail" class="form-control" />
+                            <label class="form-label" for="form3Example3c">Your Email</label>
+                          </div>
+                        </div>
+      
+                        <div class="d-flex flex-row align-items-center mb-4">
+                          <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                          <div class="form-outline flex-fill mb-0">
+                            <input type="password" id="createPassword" class="form-control" />
+                            <label class="form-label" for="form3Example4c">Password</label>
+                          </div>
+                        </div>
+      
+                        <div class="d-flex flex-row align-items-center mb-4">
+                          <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                          <div class="form-outline flex-fill mb-0">
+                            <input type="password" id="form3Example4cd" class="form-control" />
+                            <label class="form-label" for="form3Example4cd">Repeat your password</label>
+                          </div>
+                        </div>
+
+                        <div class="d-flex flex-row align-items-center mb-4">
+                          <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                          <div class="form-outline flex-fill mb-0">
+                            <input type="password" id="age" class="form-control" />
+                            <label class="form-label" for="form3Example4cd">Age</label>
+                          </div>
+                        </div>
+
+                        <div class="d-flex flex-row align-items-center mb-4">
+                          <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                          <div class="form-outline flex-fill mb-0">
+                            <input type="password" id="address" class="form-control" />
+                            <label class="form-label" for="form3Example4cd">Address</label>
+                          </div>
+                        </div>
+
+      
+                        <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                          <button type="button" value="submit" id="submit" class="btn btn-primary btn-lg">Add User</button>
+                        </div>
+      
+                      </form>
+      
+                    </div>
+                    <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+      
+                      <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp" class="img-fluid" alt="Sample image">
+      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    </main>
+
+
+<!-- // users -->
+
+    <main id="customers_container" class="col-md-9 d-none  ms-sm-auto row-lg-10 px-md-4">
+      <div id="customer_append" class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+
+          
+          </div>
+        </main>
+    
+<!-- registrations  -->
+<main id="registrations_container"class="col-md-9 d-none ms-sm-auto col-lg-10 px-md-4">
+  <div class="d-flex justify-content-center  flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">City</th>
+          <th scope="col">gender</th>
+          <th scope="col">Address</th>
+          <th scope="col">Number</th>
+
+
+        </tr>
+      </thead>
+      <tbody id="table_append">
+       
+      </tbody>
+    </table>
+</div>
+</main>
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
+    integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
+    integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha"
+    crossorigin="anonymous"></script>
+    <script src="/static/js/signup.js"></script>
+
+  <script src="/static/js/admin.js"></script>
+  <script src="/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
