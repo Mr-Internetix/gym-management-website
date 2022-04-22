@@ -7,8 +7,17 @@ window.addEventListener('DOMContentLoaded',()=>{
     })
 
     document.getElementById('signupBtn').addEventListener('click',()=>{
-        window.location.href = "/signup"
+        window.location.href = "#contactus"
     })
+
+    document.getElementById('contactUs').addEventListener('click',()=>{
+        window.location.href = "#contactus"
+    })
+
+    document.getElementById('loginButton').addEventListener('click',()=>{
+        window.location.href = "/signin"
+    })
+
 
     
 // notfy 
@@ -34,7 +43,7 @@ var notyf = new Notyf({
         console.log(JSON.stringify(data))
         
 
-        fetch('http://localhost:3000/api/contact',{
+        fetch('/api/contact',{
             method:"POST",
             headers:{
                 Accept: "application/json",
@@ -43,7 +52,9 @@ var notyf = new Notyf({
             body:JSON.stringify(data)
 
         }).then(response => response.json())
-        .then(data => notyf.success(data.message))
+        .then(data => notyf.success(data.message)).then(contactForm.reset())
+
+        
     })
 
 })
